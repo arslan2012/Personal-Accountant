@@ -1,0 +1,580 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		F5D37B172E0A5999000CF697 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F5D37AFD2E0A5997000CF697 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F5D37B042E0A5997000CF697;
+			remoteInfo = "Personal Accountant";
+		};
+		F5D37B212E0A5999000CF697 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F5D37AFD2E0A5997000CF697 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F5D37B042E0A5997000CF697;
+			remoteInfo = "Personal Accountant";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		F5D37B052E0A5997000CF697 /* Personal Accountant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Personal Accountant.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F5D37B162E0A5999000CF697 /* Personal AccountantTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Personal AccountantTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F5D37B202E0A5999000CF697 /* Personal AccountantUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Personal AccountantUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		F5D37B282E0A5999000CF697 /* Exceptions for "Personal Accountant" folder in "Personal Accountant" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = F5D37B042E0A5997000CF697 /* Personal Accountant */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		F5D37B072E0A5997000CF697 /* Personal Accountant */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F5D37B282E0A5999000CF697 /* Exceptions for "Personal Accountant" folder in "Personal Accountant" target */,
+			);
+			path = "Personal Accountant";
+			sourceTree = "<group>";
+		};
+		F5D37B192E0A5999000CF697 /* Personal AccountantTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Personal AccountantTests";
+			sourceTree = "<group>";
+		};
+		F5D37B232E0A5999000CF697 /* Personal AccountantUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Personal AccountantUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F5D37B022E0A5997000CF697 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F5D37B132E0A5999000CF697 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F5D37B1D2E0A5999000CF697 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F5D37AFC2E0A5997000CF697 = {
+			isa = PBXGroup;
+			children = (
+				F5D37B072E0A5997000CF697 /* Personal Accountant */,
+				F5D37B192E0A5999000CF697 /* Personal AccountantTests */,
+				F5D37B232E0A5999000CF697 /* Personal AccountantUITests */,
+				F5D37B062E0A5997000CF697 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F5D37B062E0A5997000CF697 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F5D37B052E0A5997000CF697 /* Personal Accountant.app */,
+				F5D37B162E0A5999000CF697 /* Personal AccountantTests.xctest */,
+				F5D37B202E0A5999000CF697 /* Personal AccountantUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F5D37B042E0A5997000CF697 /* Personal Accountant */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F5D37B292E0A5999000CF697 /* Build configuration list for PBXNativeTarget "Personal Accountant" */;
+			buildPhases = (
+				F5D37B012E0A5997000CF697 /* Sources */,
+				F5D37B022E0A5997000CF697 /* Frameworks */,
+				F5D37B032E0A5997000CF697 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				F5D37B072E0A5997000CF697 /* Personal Accountant */,
+			);
+			name = "Personal Accountant";
+			packageProductDependencies = (
+			);
+			productName = "Personal Accountant";
+			productReference = F5D37B052E0A5997000CF697 /* Personal Accountant.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F5D37B152E0A5999000CF697 /* Personal AccountantTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F5D37B2E2E0A5999000CF697 /* Build configuration list for PBXNativeTarget "Personal AccountantTests" */;
+			buildPhases = (
+				F5D37B122E0A5999000CF697 /* Sources */,
+				F5D37B132E0A5999000CF697 /* Frameworks */,
+				F5D37B142E0A5999000CF697 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F5D37B182E0A5999000CF697 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				F5D37B192E0A5999000CF697 /* Personal AccountantTests */,
+			);
+			name = "Personal AccountantTests";
+			packageProductDependencies = (
+			);
+			productName = "Personal AccountantTests";
+			productReference = F5D37B162E0A5999000CF697 /* Personal AccountantTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		F5D37B1F2E0A5999000CF697 /* Personal AccountantUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F5D37B312E0A5999000CF697 /* Build configuration list for PBXNativeTarget "Personal AccountantUITests" */;
+			buildPhases = (
+				F5D37B1C2E0A5999000CF697 /* Sources */,
+				F5D37B1D2E0A5999000CF697 /* Frameworks */,
+				F5D37B1E2E0A5999000CF697 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F5D37B222E0A5999000CF697 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				F5D37B232E0A5999000CF697 /* Personal AccountantUITests */,
+			);
+			name = "Personal AccountantUITests";
+			packageProductDependencies = (
+			);
+			productName = "Personal AccountantUITests";
+			productReference = F5D37B202E0A5999000CF697 /* Personal AccountantUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F5D37AFD2E0A5997000CF697 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					F5D37B042E0A5997000CF697 = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					F5D37B152E0A5999000CF697 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = F5D37B042E0A5997000CF697;
+					};
+					F5D37B1F2E0A5999000CF697 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = F5D37B042E0A5997000CF697;
+					};
+				};
+			};
+			buildConfigurationList = F5D37B002E0A5997000CF697 /* Build configuration list for PBXProject "Personal Accountant" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F5D37AFC2E0A5997000CF697;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = F5D37B062E0A5997000CF697 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F5D37B042E0A5997000CF697 /* Personal Accountant */,
+				F5D37B152E0A5999000CF697 /* Personal AccountantTests */,
+				F5D37B1F2E0A5999000CF697 /* Personal AccountantUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F5D37B032E0A5997000CF697 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F5D37B142E0A5999000CF697 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F5D37B1E2E0A5999000CF697 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F5D37B012E0A5997000CF697 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F5D37B122E0A5999000CF697 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F5D37B1C2E0A5999000CF697 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F5D37B182E0A5999000CF697 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F5D37B042E0A5997000CF697 /* Personal Accountant */;
+			targetProxy = F5D37B172E0A5999000CF697 /* PBXContainerItemProxy */;
+		};
+		F5D37B222E0A5999000CF697 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F5D37B042E0A5997000CF697 /* Personal Accountant */;
+			targetProxy = F5D37B212E0A5999000CF697 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		F5D37B2A2E0A5999000CF697 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Personal Accountant/Personal_Accountant.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7XX95HRPFP;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Personal Accountant/Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "tech.arslan2012.Personal-Accountant";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F5D37B2B2E0A5999000CF697 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Personal Accountant/Personal_Accountant.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7XX95HRPFP;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Personal Accountant/Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "tech.arslan2012.Personal-Accountant";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		F5D37B2C2E0A5999000CF697 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 7XX95HRPFP;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F5D37B2D2E0A5999000CF697 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 7XX95HRPFP;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F5D37B2F2E0A5999000CF697 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7XX95HRPFP;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "tech.arslan2012.Personal-AccountantTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Personal Accountant.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Personal Accountant";
+			};
+			name = Debug;
+		};
+		F5D37B302E0A5999000CF697 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7XX95HRPFP;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "tech.arslan2012.Personal-AccountantTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Personal Accountant.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Personal Accountant";
+			};
+			name = Release;
+		};
+		F5D37B322E0A5999000CF697 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7XX95HRPFP;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "tech.arslan2012.Personal-AccountantUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Personal Accountant";
+			};
+			name = Debug;
+		};
+		F5D37B332E0A5999000CF697 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7XX95HRPFP;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "tech.arslan2012.Personal-AccountantUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Personal Accountant";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F5D37B002E0A5997000CF697 /* Build configuration list for PBXProject "Personal Accountant" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F5D37B2C2E0A5999000CF697 /* Debug */,
+				F5D37B2D2E0A5999000CF697 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F5D37B292E0A5999000CF697 /* Build configuration list for PBXNativeTarget "Personal Accountant" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F5D37B2A2E0A5999000CF697 /* Debug */,
+				F5D37B2B2E0A5999000CF697 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F5D37B2E2E0A5999000CF697 /* Build configuration list for PBXNativeTarget "Personal AccountantTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F5D37B2F2E0A5999000CF697 /* Debug */,
+				F5D37B302E0A5999000CF697 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F5D37B312E0A5999000CF697 /* Build configuration list for PBXNativeTarget "Personal AccountantUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F5D37B322E0A5999000CF697 /* Debug */,
+				F5D37B332E0A5999000CF697 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F5D37AFD2E0A5997000CF697 /* Project object */;
+}
