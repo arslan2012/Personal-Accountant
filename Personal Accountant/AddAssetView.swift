@@ -63,7 +63,7 @@ struct AddAssetView: View {
                 }
                 isLoading = true
                 fetchError = nil
-                CurrencyExchange.fetchSupportedCurrencies { result in
+                CurrencyExchange.shared.fetchSupportedCurrencies { result in
                     DispatchQueue.main.async {
                         switch result {
                         case .success(let codes):

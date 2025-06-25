@@ -65,12 +65,10 @@ class CurrencyExchange {
         let fromLower = from.lowercased()
         let toLower = to.lowercased()
         // Check cache
-        if let cached = rateCache[fromLower], Date().timeIntervalSince(cached.timestamp) < rateCacheExpiry {
-            if let baseDict = try? JSONSerialization.jsonObject(with: cached.data) as? [String: Any],
-               let rate = parseRateFromDict(baseDict, toLower) {
-                completion(.success(rate))
-                return
-            }
+        if let cached = rateCache[fromLower], Date().timeIntervalSince(cached.timestamp) < rateCacheExpiry,
+           let rate = parseRate(data: cached.data, from: fromLower, to: toLower) {
+            completion(.success(rate))
+            return
         }
         let urlString = "\(primaryBaseURL)\(fromLower).json"
         print("[CurrencyConversion] Primary URL: \(urlString)")
@@ -115,19 +113,15 @@ class CurrencyExchange {
         do {
             if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
                let baseDict = json[from] as? [String: Any] {
-                return parseRateFromDict(baseDict, to)
+                if let rate = baseDict[to] as? Double {
+                    return rate
+                } else if let rateNum = baseDict[to] as? NSNumber {
+                    return rateNum.doubleValue
+                }
+                return nil
             }
         } catch {
             return nil
-        }
-        return nil
-    }
-    
-    private func parseRateFromDict(_ dict:[String: Any], _ to:String) -> Double? {
-        if let rate = dict[to] as? Double {
-            return rate
-        } else if let rateNum = dict[to] as? NSNumber {
-            return rateNum.doubleValue
         }
         return nil
     }
@@ -150,9 +144,9 @@ class CurrencyExchange {
     }
     
     /// Fetches the list of supported currency codes.
-    static func fetchSupportedCurrencies(completion: @escaping (Result<[String], Error>) -> Void) {
+    func fetchSupportedCurrencies(completion: @escaping (Result<[String], Error>) -> Void) {
         // Try cache first
-        if let cache = CurrencyExchange.shared.supportedCurrenciesCache, Date().timeIntervalSince(cache.timestamp) < CurrencyExchange.shared.currencyListCacheExpiry {
+        if let cache = supportedCurrenciesCache, Date().timeIntervalSince(cache.timestamp) < currencyListCacheExpiry {
             completion(.success(cache.codes))
             return
         }
@@ -166,8 +160,8 @@ class CurrencyExchange {
                 do {
                     if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] {
                         let codes = Array(json.keys).map { $0.uppercased() }.sorted()
-                        CurrencyExchange.shared.supportedCurrenciesCache = SupportedCurrenciesCache(codes: codes, timestamp: Date())
-                        CurrencyExchange.shared.saveSupportedCurrenciesCache()
+                        self.supportedCurrenciesCache = SupportedCurrenciesCache(codes: codes, timestamp: Date())
+                        self.saveSupportedCurrenciesCache()
                         completion(.success(codes))
                     } else {
                         completion(.failure(NSError(domain: "Invalid JSON", code: 0)))
