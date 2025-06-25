@@ -111,8 +111,8 @@ struct AssetsView: View {
             }
             .background(Color(.systemGroupedBackground))
             .onAppear(perform: recalculateOnChange)
-            .onChange(of: assets) { _ in recalculateOnChange() }
-            .onChange(of: defaultCurrency) { _ in recalculateOnChange() }
+            .onChange(of: assets) { recalculateOnChange() }
+            .onChange(of: defaultCurrency) { recalculateOnChange() }
         }
         .sheet(isPresented: $showingAddSheet) {
             AddAssetView { name, amount, currency, type, detail in
