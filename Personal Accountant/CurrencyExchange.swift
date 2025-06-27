@@ -13,27 +13,39 @@ private struct SupportedCurrenciesCache: Codable {
 class CurrencyExchange {
     static let shared = CurrencyExchange()
     
-    private let primaryBaseURL = "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/"
-    private let fallbackBaseURL = "https://latest.currency-api.pages.dev/v1/currencies/"
-    private let rateCacheExpiry: TimeInterval = 12 * 60 * 60 // 12 hours
-    private let currencyListCacheExpiry: TimeInterval = 24 * 60 * 60 // 24 hours
-    
+    // Flag to disable network calls during UI testing
+    static var isUITesting: Bool {
+        return ProcessInfo.processInfo.arguments.contains("UI_TESTING")
+    }
+
+    private let primaryBaseURL =
+        "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/"
+    private let fallbackBaseURL =
+        "https://latest.currency-api.pages.dev/v1/currencies/"
+    private let rateCacheExpiry: TimeInterval = 12 * 60 * 60  // 12 hours
+    private let currencyListCacheExpiry: TimeInterval = 24 * 60 * 60  // 24 hours
+
     // In-memory cache
     private var rateCache: [String: RateCacheEntry] = [:]
     private var supportedCurrenciesCache: SupportedCurrenciesCache? = nil
-    
+
     // UserDefaults keys
     private let rateCacheKey = "CurrencyExchangeRateCache"
-    private let currencyListCacheKey = "CurrencyExchangeSupportedCurrenciesCache"
-    
+    private let currencyListCacheKey =
+        "CurrencyExchangeSupportedCurrenciesCache"
+
     private init() {
         loadRateCache()
         loadSupportedCurrenciesCache()
     }
-    
+
     private func loadRateCache() {
         if let data = UserDefaults.standard.data(forKey: rateCacheKey),
-           let dict = try? JSONDecoder().decode([String: RateCacheEntry].self, from: data) {
+            let dict = try? JSONDecoder().decode(
+                [String: RateCacheEntry].self,
+                from: data
+            )
+        {
             rateCache = dict
         }
     }
@@ -42,31 +54,53 @@ class CurrencyExchange {
             UserDefaults.standard.set(data, forKey: rateCacheKey)
         }
     }
-    
+
     private func loadSupportedCurrenciesCache() {
         if let data = UserDefaults.standard.data(forKey: currencyListCacheKey),
-           let obj = try? JSONDecoder().decode(SupportedCurrenciesCache.self, from: data) {
+            let obj = try? JSONDecoder().decode(
+                SupportedCurrenciesCache.self,
+                from: data
+            )
+        {
             supportedCurrenciesCache = obj
         }
     }
     private func saveSupportedCurrenciesCache() {
         if let cache = supportedCurrenciesCache,
-           let data = try? JSONEncoder().encode(cache) {
+            let data = try? JSONEncoder().encode(cache)
+        {
             UserDefaults.standard.set(data, forKey: currencyListCacheKey)
         }
     }
-    
+
     /// Fetches the exchange rate from one currency to another.
     /// - Parameters:
     ///   - from: The base currency code (e.g., "usd").
     ///   - to: The target currency code (e.g., "eur").
     ///   - completion: Completion handler with the exchange rate or error.
-    func fetchExchangeRate(from: String, to: String, completion: @escaping (Result<Double, Error>) -> Void) {
+    func fetchExchangeRate(
+        from: String,
+        to: String,
+        completion: @escaping (Result<Double, Error>) -> Void
+    ) {
+        // During UI testing, return mock exchange rate
+        if CurrencyExchange.isUITesting {
+            // Return a mock exchange rate
+            completion(.success(1.2)) // Mock rate
+            return
+        }
+        
         let fromLower = from.lowercased()
         let toLower = to.lowercased()
         // Check cache
-        if let cached = rateCache[fromLower], Date().timeIntervalSince(cached.timestamp) < rateCacheExpiry,
-           let rate = parseRate(data: cached.data, from: fromLower, to: toLower) {
+        if let cached = rateCache[fromLower],
+            Date().timeIntervalSince(cached.timestamp) < rateCacheExpiry,
+            let rate = parseRate(
+                data: cached.data,
+                from: fromLower,
+                to: toLower
+            )
+        {
             completion(.success(rate))
             return
         }
@@ -76,43 +110,83 @@ class CurrencyExchange {
             completion(.failure(NSError(domain: "Invalid URL", code: 0)))
             return
         }
-        
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            if let data = data, let rate = self.parseRate(data: data, from: fromLower, to: toLower) {
-                self.rateCache[fromLower] = RateCacheEntry(data: data, timestamp: Date())
+
+        let task = URLSession.shared.dataTask(with: url) {
+            data,
+            response,
+            error in
+            if let data = data,
+                let rate = self.parseRate(
+                    data: data,
+                    from: fromLower,
+                    to: toLower
+                )
+            {
+                self.rateCache[fromLower] = RateCacheEntry(
+                    data: data,
+                    timestamp: Date()
+                )
                 self.saveRateCache()
                 completion(.success(rate))
             } else {
                 // Try fallback
-                self.fetchExchangeRateFallback(from: fromLower, to: toLower, completion: completion)
+                self.fetchExchangeRateFallback(
+                    from: fromLower,
+                    to: toLower,
+                    completion: completion
+                )
             }
         }
         task.resume()
     }
-    
-    private func fetchExchangeRateFallback(from: String, to: String, completion: @escaping (Result<Double, Error>) -> Void) {
+
+    private func fetchExchangeRateFallback(
+        from: String,
+        to: String,
+        completion: @escaping (Result<Double, Error>) -> Void
+    ) {
         let urlString = "\(fallbackBaseURL)\(from).json"
         print("[CurrencyConversion] Fallback URL: \(urlString)")
         guard let url = URL(string: urlString) else {
-            completion(.failure(NSError(domain: "Invalid fallback URL", code: 0)))
+            completion(
+                .failure(NSError(domain: "Invalid fallback URL", code: 0))
+            )
             return
         }
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            if let data = data, let rate = self.parseRate(data: data, from: from, to: to) {
-                self.rateCache[from] = RateCacheEntry(data: data, timestamp: Date())
+        let task = URLSession.shared.dataTask(with: url) {
+            data,
+            response,
+            error in
+            if let data = data,
+                let rate = self.parseRate(data: data, from: from, to: to)
+            {
+                self.rateCache[from] = RateCacheEntry(
+                    data: data,
+                    timestamp: Date()
+                )
                 self.saveRateCache()
                 completion(.success(rate))
             } else {
-                completion(.failure(error ?? NSError(domain: "Failed to fetch exchange rate", code: 0)))
+                completion(
+                    .failure(
+                        error
+                            ?? NSError(
+                                domain: "Failed to fetch exchange rate",
+                                code: 0
+                            )
+                    )
+                )
             }
         }
         task.resume()
     }
-    
+
     private func parseRate(data: Data, from: String, to: String) -> Double? {
         do {
-            if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
-               let baseDict = json[from] as? [String: Any] {
+            if let json = try JSONSerialization.jsonObject(with: data)
+                as? [String: Any],
+                let baseDict = json[from] as? [String: Any]
+            {
                 if let rate = baseDict[to] as? Double {
                     return rate
                 } else if let rateNum = baseDict[to] as? NSNumber {
@@ -125,14 +199,19 @@ class CurrencyExchange {
         }
         return nil
     }
-    
+
     /// Converts an amount from one currency to another.
     /// - Parameters:
     ///   - amount: The amount in the base currency.
     ///   - from: The base currency code.
     ///   - to: The target currency code.
     ///   - completion: Completion handler with the converted amount or error.
-    func convert(amount: Double, from: String, to: String, completion: @escaping (Result<Double, Error>) -> Void) {
+    func convert(
+        amount: Double,
+        from: String,
+        to: String,
+        completion: @escaping (Result<Double, Error>) -> Void
+    ) {
         fetchExchangeRate(from: from, to: to) { result in
             switch result {
             case .success(let rate):
@@ -142,29 +221,55 @@ class CurrencyExchange {
             }
         }
     }
-    
+
     /// Fetches the list of supported currency codes.
-    func fetchSupportedCurrencies(completion: @escaping (Result<[String], Error>) -> Void) {
+    func fetchSupportedCurrencies(
+        completion: @escaping (Result<[String], Error>) -> Void
+    ) {
+        // During UI testing, return fallback currencies immediately
+        if CurrencyExchange.isUITesting {
+            let fallbackCurrencies = [
+                "USD", "EUR", "GBP", "JPY", "CAD", "AUD", "CHF", "CNY", "INR", "KRW"
+            ]
+            completion(.success(fallbackCurrencies))
+            return
+        }
+        
         // Try cache first
-        if let cache = supportedCurrenciesCache, Date().timeIntervalSince(cache.timestamp) < currencyListCacheExpiry {
+        if let cache = supportedCurrenciesCache,
+            Date().timeIntervalSince(cache.timestamp) < currencyListCacheExpiry
+        {
             completion(.success(cache.codes))
             return
         }
-        let urlString = "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies.json"
+        let urlString =
+            "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies.json"
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0)))
             return
         }
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        let task = URLSession.shared.dataTask(with: url) {
+            data,
+            response,
+            error in
             if let data = data {
                 do {
-                    if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] {
-                        let codes = Array(json.keys).map { $0.uppercased() }.sorted()
-                        self.supportedCurrenciesCache = SupportedCurrenciesCache(codes: codes, timestamp: Date())
+                    if let json = try JSONSerialization.jsonObject(with: data)
+                        as? [String: Any]
+                    {
+                        let codes = Array(json.keys).map { $0.uppercased() }
+                            .sorted()
+                        self.supportedCurrenciesCache =
+                            SupportedCurrenciesCache(
+                                codes: codes,
+                                timestamp: Date()
+                            )
                         self.saveSupportedCurrenciesCache()
                         completion(.success(codes))
                     } else {
-                        completion(.failure(NSError(domain: "Invalid JSON", code: 0)))
+                        completion(
+                            .failure(NSError(domain: "Invalid JSON", code: 0))
+                        )
                     }
                 } catch {
                     completion(.failure(error))
@@ -177,4 +282,4 @@ class CurrencyExchange {
         }
         task.resume()
     }
-} 
+}

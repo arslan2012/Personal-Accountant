@@ -12,12 +12,13 @@ struct AddAssetView: View {
     @State private var isLoading = true
     @State private var fetchError: String? = nil
     var onSave: (String, Double, String, AssetType, String?) -> Void
-    
-    init(onSave: @escaping (String, Double, String, AssetType, String?) -> Void) {
+
+    init(onSave: @escaping (String, Double, String, AssetType, String?) -> Void)
+    {
         self._currency = State(initialValue: "")
         self.onSave = onSave
     }
-    
+
     var body: some View {
         NavigationView {
             Form {
@@ -49,12 +50,23 @@ struct AddAssetView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        if let amountValue = Double(amount), !name.isEmpty, !currency.isEmpty {
-                            onSave(name, amountValue, currency, type, detail.isEmpty ? nil : detail)
+                        if let amountValue = Double(amount), !name.isEmpty,
+                            !currency.isEmpty
+                        {
+                            onSave(
+                                name,
+                                amountValue,
+                                currency,
+                                type,
+                                detail.isEmpty ? nil : detail
+                            )
                             dismiss()
                         }
                     }
-                    .disabled(name.isEmpty || currency.isEmpty || Double(amount) == nil || isLoading)
+                    .disabled(
+                        name.isEmpty || currency.isEmpty
+                            || Double(amount) == nil || isLoading
+                    )
                 }
             }
             .onAppear {
@@ -81,4 +93,4 @@ struct AddAssetView: View {
             }
         }
     }
-} 
+}

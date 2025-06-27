@@ -5,15 +5,18 @@
 //  Created by Arslan Ablikim on 2025/6/24.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct ContentView: View {
     var body: some View {
         TabView {
             IncomeOutcomeView()
                 .tabItem {
-                    Label("Income/Outcome", systemImage: "list.bullet.rectangle")
+                    Label(
+                        "Income/Outcome",
+                        systemImage: "list.bullet.rectangle"
+                    )
                 }
                 .tag(0)
             AssetsView()

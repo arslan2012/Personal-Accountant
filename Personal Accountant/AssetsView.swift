@@ -1,22 +1,22 @@
-import SwiftUI
-import SwiftData
 import Combine
+import SwiftData
+import SwiftUI
 
 struct AssetsView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var assets: [Asset]
-    
+
     @AppStorage("defaultCurrency") private var defaultCurrency: String = "USD"
     @State private var showingAddSheet = false
     @State private var convertedTotal: Double? = nil
     @State private var isLoadingTotal = false
     @State private var conversionCancellable: AnyCancellable? = nil
-    
+
     var totalByCurrency: [String: Double] {
         Dictionary(grouping: assets, by: { $0.currency })
             .mapValues { $0.reduce(0) { $0 + $1.amount } }
     }
-    
+
     // Calculate the total in the user's preferred currency
     func calculateConvertedTotal() {
         isLoadingTotal = true
@@ -25,7 +25,11 @@ struct AssetsView: View {
         var errorOccurred = false
         for asset in assets {
             group.enter()
-            CurrencyExchange.shared.convert(amount: asset.amount, from: asset.currency, to: defaultCurrency) { result in
+            CurrencyExchange.shared.convert(
+                amount: asset.amount,
+                from: asset.currency,
+                to: defaultCurrency
+            ) { result in
                 switch result {
                 case .success(let converted):
                     sum += converted
@@ -40,13 +44,13 @@ struct AssetsView: View {
             self.isLoadingTotal = false
         }
     }
-    
+
     // Recalculate when assets or currency changes
     private func recalculateOnChange() {
         convertedTotal = nil
         calculateConvertedTotal()
     }
-    
+
     func accentColor(for type: AssetType) -> Color {
         switch type {
         case .savings: return .green
@@ -55,7 +59,7 @@ struct AssetsView: View {
         case .other: return .gray
         }
     }
-    
+
     var body: some View {
         NavigationView {
             VStack(alignment: .leading, spacing: 12) {
@@ -66,13 +70,18 @@ struct AssetsView: View {
                     } else if let total = convertedTotal {
                         headerView(amount: total, currency: defaultCurrency)
                     } else {
-                        headerView(amount: 0, currency: defaultCurrency, error: true)
+                        headerView(
+                            amount: 0,
+                            currency: defaultCurrency,
+                            error: true
+                        )
                     }
                 }
                 if !totalByCurrency.isEmpty {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
-                            ForEach(Array(totalByCurrency.keys), id: \ .self) { currency in
+                            ForEach(Array(totalByCurrency.keys), id: \.self) {
+                                currency in
                                 let total = totalByCurrency[currency] ?? 0
                                 HStack(spacing: 6) {
                                     Text("Total")
@@ -116,13 +125,21 @@ struct AssetsView: View {
         }
         .sheet(isPresented: $showingAddSheet) {
             AddAssetView { name, amount, currency, type, detail in
-                addAsset(name: name, amount: amount, currency: currency, type: type, detail: detail)
+                addAsset(
+                    name: name,
+                    amount: amount,
+                    currency: currency,
+                    type: type,
+                    detail: detail
+                )
             }
         }
     }
-    
+
     // Header view for converted total
-    func headerView(amount: Double, currency: String, error: Bool = false) -> some View {
+    func headerView(amount: Double, currency: String, error: Bool = false)
+        -> some View
+    {
         HStack {
             Text(error ? "Could not convert all assets" : "Total Assets")
                 .font(.title2)
@@ -138,14 +155,26 @@ struct AssetsView: View {
         .cornerRadius(12)
         .padding(.horizontal)
     }
-    
-    private func addAsset(name: String, amount: Double, currency: String, type: AssetType, detail: String?) {
+
+    private func addAsset(
+        name: String,
+        amount: Double,
+        currency: String,
+        type: AssetType,
+        detail: String?
+    ) {
         withAnimation {
-            let newAsset = Asset(name: name, amount: amount, currency: currency, type: type, detail: detail)
+            let newAsset = Asset(
+                name: name,
+                amount: amount,
+                currency: currency,
+                type: type,
+                detail: detail
+            )
             modelContext.insert(newAsset)
         }
     }
-    
+
     private func deleteAssets(offsets: IndexSet, from assets: [Asset]) {
         withAnimation {
             for index in offsets {
@@ -153,7 +182,7 @@ struct AssetsView: View {
             }
         }
     }
-    
+
     func icon(for type: AssetType) -> String {
         switch type {
         case .savings: return "banknote"
@@ -162,7 +191,7 @@ struct AssetsView: View {
         case .other: return "archivebox"
         }
     }
-    
+
     func assetList(assets: [Asset]) -> some View {
         ScrollView {
             LazyVStack(spacing: 14) {
@@ -170,7 +199,9 @@ struct AssetsView: View {
                     HStack(alignment: .center, spacing: 16) {
                         ZStack {
                             Circle()
-                                .fill(accentColor(for: asset.type).opacity(0.18))
+                                .fill(
+                                    accentColor(for: asset.type).opacity(0.18)
+                                )
                                 .frame(width: 44, height: 44)
                             Image(systemName: icon(for: asset.type))
                                 .resizable()
@@ -184,7 +215,9 @@ struct AssetsView: View {
                             HStack(spacing: 6) {
                                 Text(asset.type.rawValue.capitalized)
                                     .font(.caption)
-                                    .foregroundColor(accentColor(for: asset.type))
+                                    .foregroundColor(
+                                        accentColor(for: asset.type)
+                                    )
                                 if let detail = asset.detail, !detail.isEmpty {
                                     Text("· ") + Text(detail).font(.caption)
                                 }
@@ -192,9 +225,11 @@ struct AssetsView: View {
                         }
                         Spacer()
                         VStack(alignment: .trailing, spacing: 2) {
-                            Text("\(asset.amount, specifier: "%.2f") \(asset.currency)")
-                                .bold()
-                                .foregroundColor(accentColor(for: asset.type))
+                            Text(
+                                "\(asset.amount, specifier: "%.2f") \(asset.currency)"
+                            )
+                            .bold()
+                            .foregroundColor(accentColor(for: asset.type))
                         }
                     }
                     .padding(.vertical, 10)
@@ -202,7 +237,12 @@ struct AssetsView: View {
                     .background(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
                             .fill(Color(.secondarySystemGroupedBackground))
-                            .shadow(color: Color.black.opacity(0.04), radius: 4, x: 0, y: 2)
+                            .shadow(
+                                color: Color.black.opacity(0.04),
+                                radius: 4,
+                                x: 0,
+                                y: 2
+                            )
                     )
                 }
                 .onDelete { offsets in

@@ -13,14 +13,19 @@ struct AddSpendingView: View {
     @State private var isLoading = true
     @State private var fetchError: String? = nil
     var onSave: (String, Double, String, String, Date, TransactionType) -> Void
-    
-    init(type: TransactionType, onSave: @escaping (String, Double, String, String, Date, TransactionType) -> Void) {
+
+    init(
+        type: TransactionType,
+        onSave: @escaping (
+            String, Double, String, String, Date, TransactionType
+        ) -> Void
+    ) {
         self._selectedType = State(initialValue: type)
         // currency will be set in .onAppear
         self._currency = State(initialValue: "")
         self.onSave = onSave
     }
-    
+
     var body: some View {
         NavigationView {
             Form {
@@ -54,12 +59,24 @@ struct AddSpendingView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        if let amountValue = Double(amount), !category.isEmpty, !currency.isEmpty {
-                            onSave(category, amountValue, currency, detail, date, selectedType)
+                        if let amountValue = Double(amount), !category.isEmpty,
+                            !currency.isEmpty
+                        {
+                            onSave(
+                                category,
+                                amountValue,
+                                currency,
+                                detail,
+                                date,
+                                selectedType
+                            )
                             dismiss()
                         }
                     }
-                    .disabled(category.isEmpty || currency.isEmpty || Double(amount) == nil || isLoading)
+                    .disabled(
+                        category.isEmpty || currency.isEmpty
+                            || Double(amount) == nil || isLoading
+                    )
                 }
             }
             .onAppear {
@@ -86,4 +103,4 @@ struct AddSpendingView: View {
             }
         }
     }
-} 
+}
