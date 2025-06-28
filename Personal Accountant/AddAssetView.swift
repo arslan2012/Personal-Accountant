@@ -14,10 +14,24 @@ struct AddAssetView: View {
     @State private var showingCurrencyPicker = false
     var onSave: (String, Double, String, AssetType, String?) -> Void
 
-    init(onSave: @escaping (String, Double, String, AssetType, String?) -> Void)
-    {
+    private let editingAsset: Asset?
+
+    init(
+        editingAsset: Asset? = nil,
+        onSave: @escaping (String, Double, String, AssetType, String?) -> Void
+    ) {
+        self.editingAsset = editingAsset
         self._currency = State(initialValue: "")
         self.onSave = onSave
+
+        // If editing, populate the fields with existing data
+        if let asset = editingAsset {
+            self._name = State(initialValue: asset.name)
+            self._amount = State(initialValue: String(asset.amount))
+            self._currency = State(initialValue: asset.currency)
+            self._type = State(initialValue: asset.type)
+            self._detail = State(initialValue: asset.detail ?? "")
+        }
     }
 
     var body: some View {
@@ -38,8 +52,13 @@ struct AddAssetView: View {
                             showingCurrencyPicker = true
                         }) {
                             HStack {
-                                Text(currency.isEmpty ? "Select Currency" : currency)
-                                    .foregroundColor(currency.isEmpty ? .secondary : .primary)
+                                Text(
+                                    currency.isEmpty
+                                        ? "Select Currency" : currency
+                                )
+                                .foregroundColor(
+                                    currency.isEmpty ? .secondary : .primary
+                                )
                                 Image(systemName: "chevron.right")
                                     .foregroundColor(.secondary)
                                     .font(.caption)
@@ -55,13 +74,13 @@ struct AddAssetView: View {
                 }
                 TextField("Detail (optional)", text: $detail)
             }
-            .navigationTitle("Add Asset")
+            .navigationTitle(editingAsset != nil ? "Edit Asset" : "Add Asset")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
+                    Button(editingAsset != nil ? "Update" : "Save") {
                         if let amountValue = Double(amount), !name.isEmpty,
                             !currency.isEmpty
                         {

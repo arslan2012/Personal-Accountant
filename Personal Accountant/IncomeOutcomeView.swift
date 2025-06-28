@@ -35,6 +35,8 @@ struct IncomeOutcomeView: View {
     @State private var conversionErrorMessage: String? = nil
     @State private var monthSections: [MonthSection] = []
     @State private var isLoadingMonthSections = false
+    @State private var editingTransaction: Transaction? = nil
+    @State private var showingEditSheet = false
 
     var filteredTransactions: [Transaction] {
         switch selectedTab {
@@ -168,14 +170,20 @@ struct IncomeOutcomeView: View {
                     selectedTab: selectedTab,
                     defaultCurrency: defaultCurrency,
                     accentColor: accentColor,
-                    icon: icon
+                    icon: icon,
+                    onDelete: { transaction in
+                        withAnimation {
+                            modelContext.delete(transaction)
+                        }
+                    },
+                    onEdit: { transaction in
+                        editingTransaction = transaction
+                        showingEditSheet = true
+                    }
                 )
             }
             .navigationTitle("Income/Outcome")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
                 ToolbarItem {
                     Button(action: { showingAddSheet = true }) {
                         Label("Add", systemImage: "plus")
@@ -207,6 +215,24 @@ struct IncomeOutcomeView: View {
                 )
             }
         }
+        .sheet(isPresented: $showingEditSheet) {
+            if let transaction = editingTransaction {
+                AddSpendingView(
+                    type: transaction.type,
+                    editingTransaction: transaction
+                ) { category, amount, currency, detail, date, type in
+                    editTransaction(
+                        transaction: transaction,
+                        category: category,
+                        amount: amount,
+                        currency: currency,
+                        detail: detail,
+                        date: date,
+                        type: type
+                    )
+                }
+            }
+        }
     }
 
     private func addTransaction(
@@ -227,17 +253,6 @@ struct IncomeOutcomeView: View {
                 type: type
             )
             modelContext.insert(newTransaction)
-        }
-    }
-
-    private func deleteTransactions(
-        offsets: IndexSet,
-        from transactions: [Transaction]
-    ) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(transactions[index])
-            }
         }
     }
 
@@ -292,6 +307,25 @@ struct IncomeOutcomeView: View {
     // Call this on appear
     private func recalculateOnAppear() {
         recalculateOnChange()
+    }
+
+    private func editTransaction(
+        transaction: Transaction,
+        category: String,
+        amount: Double,
+        currency: String,
+        detail: String,
+        date: Date,
+        type: TransactionType
+    ) {
+        withAnimation {
+            transaction.category = category
+            transaction.amount = amount
+            transaction.currency = currency
+            transaction.detail = detail
+            transaction.date = date
+            transaction.type = type
+        }
     }
 }
 
@@ -366,38 +400,16 @@ struct TransactionListWithMonthDividers: View {
     let defaultCurrency: String
     let accentColor: (TransactionTab) -> Color
     let icon: (TransactionType) -> String
+    let onDelete: (Transaction) -> Void
+    let onEdit: (Transaction) -> Void
+
     var body: some View {
-        ScrollView {
-            if isLoading {
-                ProgressView("Loading...").padding()
-            } else {
-                LazyVStack(spacing: 14) {
-                    ForEach(monthSections) { section in
-                        // Month divider
-                        HStack {
-                            Text(
-                                section.month,
-                                format: Date.FormatStyle().month(.wide).year()
-                            )
-                            .font(.headline)
-                            Spacer()
-                            if let total = section.total {
-                                Text(
-                                    "\(total, specifier: "%.2f") \(defaultCurrency)"
-                                )
-                                .font(.headline)
-                                .foregroundColor(.blue)
-                            } else {
-                                Text("-")
-                                    .font(.headline)
-                                    .foregroundColor(.gray)
-                            }
-                        }
-                        .padding(.vertical, 6)
-                        .padding(.horizontal)
-                        .background(Color(.systemGray6))
-                        .cornerRadius(8)
-                        // Transactions for this month
+        if isLoading {
+            ProgressView("Loading...").padding()
+        } else {
+            List {
+                ForEach(monthSections) { section in
+                    Section {
                         ForEach(section.transactions) { transaction in
                             HStack(alignment: .center, spacing: 16) {
                                 ZStack {
@@ -490,11 +502,51 @@ struct TransactionListWithMonthDividers: View {
                                     y: 2
                                 )
                             )
+                            .listRowBackground(Color.clear)
+                            .listRowSeparator(.hidden)
+                            .swipeActions(
+                                edge: .trailing,
+                                allowsFullSwipe: false
+                            ) {
+                                Button("Delete", role: .destructive) {
+                                    onDelete(transaction)
+                                }
+                                Button("Edit") {
+                                    onEdit(transaction)
+                                }
+                                .tint(.blue)
+                            }
                         }
+                    } header: {
+                        HStack {
+                            Text(
+                                section.month,
+                                format: Date.FormatStyle().month(.wide).year()
+                            )
+                            .font(.headline)
+                            Spacer()
+                            if let total = section.total {
+                                Text(
+                                    "\(total, specifier: "%.2f") \(defaultCurrency)"
+                                )
+                                .font(.headline)
+                                .foregroundColor(.blue)
+                            } else {
+                                Text("-")
+                                    .font(.headline)
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                        .padding(.vertical, 6)
+                        .padding(.horizontal)
+                        .background(Color(.systemGray6))
+                        .cornerRadius(8)
                     }
                 }
-                .padding([.horizontal, .bottom])
             }
+            .listStyle(.grouped)
+            .scrollContentBackground(.hidden)
+            .background(Color(.systemGroupedBackground))
         }
     }
 }

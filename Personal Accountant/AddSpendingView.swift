@@ -15,16 +15,30 @@ struct AddSpendingView: View {
     @State private var showingCurrencyPicker = false
     var onSave: (String, Double, String, String, Date, TransactionType) -> Void
 
+    private let editingTransaction: Transaction?
+
     init(
         type: TransactionType,
+        editingTransaction: Transaction? = nil,
         onSave: @escaping (
             String, Double, String, String, Date, TransactionType
         ) -> Void
     ) {
+        self.editingTransaction = editingTransaction
         self._selectedType = State(initialValue: type)
         // currency will be set in .onAppear
         self._currency = State(initialValue: "")
         self.onSave = onSave
+
+        // If editing, populate the fields with existing data
+        if let transaction = editingTransaction {
+            self._category = State(initialValue: transaction.category)
+            self._amount = State(initialValue: String(transaction.amount))
+            self._currency = State(initialValue: transaction.currency)
+            self._detail = State(initialValue: transaction.detail)
+            self._date = State(initialValue: transaction.date)
+            self._selectedType = State(initialValue: transaction.type)
+        }
     }
 
     var body: some View {
@@ -51,8 +65,13 @@ struct AddSpendingView: View {
                             showingCurrencyPicker = true
                         }) {
                             HStack {
-                                Text(currency.isEmpty ? "Select Currency" : currency)
-                                    .foregroundColor(currency.isEmpty ? .secondary : .primary)
+                                Text(
+                                    currency.isEmpty
+                                        ? "Select Currency" : currency
+                                )
+                                .foregroundColor(
+                                    currency.isEmpty ? .secondary : .primary
+                                )
                                 Image(systemName: "chevron.right")
                                     .foregroundColor(.secondary)
                                     .font(.caption)
@@ -64,13 +83,16 @@ struct AddSpendingView: View {
                 TextField("Detail", text: $detail)
                 DatePicker("Date", selection: $date, displayedComponents: .date)
             }
-            .navigationTitle(selectedType.rawValue.capitalized)
+            .navigationTitle(
+                editingTransaction != nil
+                    ? "Edit Transaction" : selectedType.rawValue.capitalized
+            )
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
+                    Button(editingTransaction != nil ? "Update" : "Save") {
                         if let amountValue = Double(amount), !category.isEmpty,
                             !currency.isEmpty
                         {

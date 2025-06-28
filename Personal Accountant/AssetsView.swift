@@ -11,6 +11,8 @@ struct AssetsView: View {
     @State private var convertedTotal: Double? = nil
     @State private var isLoadingTotal = false
     @State private var conversionCancellable: AnyCancellable? = nil
+    @State private var editingAsset: Asset? = nil
+    @State private var showingEditSheet = false
 
     var totalByCurrency: [String: Double] {
         Dictionary(grouping: assets, by: { $0.currency })
@@ -109,9 +111,6 @@ struct AssetsView: View {
             }
             .navigationTitle("Assets")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
                 ToolbarItem {
                     Button(action: { showingAddSheet = true }) {
                         Label("Add Asset", systemImage: "plus")
@@ -132,6 +131,22 @@ struct AssetsView: View {
                     type: type,
                     detail: detail
                 )
+            }
+        }
+        .sheet(isPresented: $showingEditSheet) {
+            if let asset = editingAsset {
+                AddAssetView(
+                    editingAsset: asset
+                ) { name, amount, currency, type, detail in
+                    editAsset(
+                        asset: asset,
+                        name: name,
+                        amount: amount,
+                        currency: currency,
+                        type: type,
+                        detail: detail
+                    )
+                }
             }
         }
     }
@@ -175,11 +190,20 @@ struct AssetsView: View {
         }
     }
 
-    private func deleteAssets(offsets: IndexSet, from assets: [Asset]) {
+    private func editAsset(
+        asset: Asset,
+        name: String,
+        amount: Double,
+        currency: String,
+        type: AssetType,
+        detail: String?
+    ) {
         withAnimation {
-            for index in offsets {
-                modelContext.delete(assets[index])
-            }
+            asset.name = name
+            asset.amount = amount
+            asset.currency = currency
+            asset.type = type
+            asset.detail = detail
         }
     }
 
@@ -193,63 +217,74 @@ struct AssetsView: View {
     }
 
     func assetList(assets: [Asset]) -> some View {
-        ScrollView {
-            LazyVStack(spacing: 14) {
-                ForEach(assets) { asset in
-                    HStack(alignment: .center, spacing: 16) {
-                        ZStack {
-                            Circle()
-                                .fill(
-                                    accentColor(for: asset.type).opacity(0.18)
+        List {
+            ForEach(assets) { asset in
+                HStack(alignment: .center, spacing: 16) {
+                    ZStack {
+                        Circle()
+                            .fill(
+                                accentColor(for: asset.type).opacity(0.18)
+                            )
+                            .frame(width: 44, height: 44)
+                        Image(systemName: icon(for: asset.type))
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 26, height: 26)
+                            .foregroundColor(accentColor(for: asset.type))
+                    }
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(asset.name)
+                            .font(.headline)
+                        HStack(spacing: 6) {
+                            Text(asset.type.rawValue.capitalized)
+                                .font(.caption)
+                                .foregroundColor(
+                                    accentColor(for: asset.type)
                                 )
-                                .frame(width: 44, height: 44)
-                            Image(systemName: icon(for: asset.type))
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 26, height: 26)
-                                .foregroundColor(accentColor(for: asset.type))
-                        }
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(asset.name)
-                                .font(.headline)
-                            HStack(spacing: 6) {
-                                Text(asset.type.rawValue.capitalized)
-                                    .font(.caption)
-                                    .foregroundColor(
-                                        accentColor(for: asset.type)
-                                    )
-                                if let detail = asset.detail, !detail.isEmpty {
-                                    Text("· ") + Text(detail).font(.caption)
-                                }
+                            if let detail = asset.detail, !detail.isEmpty {
+                                Text("· ") + Text(detail).font(.caption)
                             }
                         }
-                        Spacer()
-                        VStack(alignment: .trailing, spacing: 2) {
-                            Text(
-                                "\(asset.amount, specifier: "%.2f") \(asset.currency)"
-                            )
-                            .bold()
-                            .foregroundColor(accentColor(for: asset.type))
+                    }
+                    Spacer()
+                    VStack(alignment: .trailing, spacing: 2) {
+                        Text(
+                            "\(asset.amount, specifier: "%.2f") \(asset.currency)"
+                        )
+                        .bold()
+                        .foregroundColor(accentColor(for: asset.type))
+                    }
+                }
+                .padding(.vertical, 10)
+                .padding(.horizontal, 14)
+                .background(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .fill(Color(.secondarySystemGroupedBackground))
+                        .shadow(
+                            color: Color.black.opacity(0.04),
+                            radius: 4,
+                            x: 0,
+                            y: 2
+                        )
+                )
+                .listRowBackground(Color.clear)
+                .listRowSeparator(.hidden)
+                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                    Button("Delete", role: .destructive) {
+                        withAnimation {
+                            modelContext.delete(asset)
                         }
                     }
-                    .padding(.vertical, 10)
-                    .padding(.horizontal, 14)
-                    .background(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(Color(.secondarySystemGroupedBackground))
-                            .shadow(
-                                color: Color.black.opacity(0.04),
-                                radius: 4,
-                                x: 0,
-                                y: 2
-                            )
-                    )
-                }
-                .onDelete { offsets in
-                    deleteAssets(offsets: offsets, from: assets)
+                    Button("Edit") {
+                        editingAsset = asset
+                        showingEditSheet = true
+                    }
+                    .tint(.blue)
                 }
             }
-            .padding([.horizontal, .bottom])
         }
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
+        .background(Color(.systemGroupedBackground))
     }
 }
