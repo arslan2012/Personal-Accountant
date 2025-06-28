@@ -6,6 +6,7 @@ struct SettingsView: View {
     @State private var supportedCurrencies: [String] = []
     @State private var isLoading = true
     @State private var fetchError: String? = nil
+    @State private var showingCurrencyPicker = false
     
     // Fallback currencies for when network fails
     private let fallbackCurrencies = [
@@ -32,10 +33,21 @@ struct SettingsView: View {
                             .accessibilityIdentifier("FallbackButton")
                         }
                     } else {
-                        Picker("Currency", selection: $defaultCurrency) {
-                            ForEach(supportedCurrencies, id: \.self) { code in
-                                Text(code).tag(code)
+                        HStack {
+                            Text("Default Currency")
+                            Spacer()
+                            Button(action: {
+                                showingCurrencyPicker = true
+                            }) {
+                                HStack {
+                                    Text(defaultCurrency)
+                                        .foregroundColor(.primary)
+                                    Image(systemName: "chevron.right")
+                                        .foregroundColor(.secondary)
+                                        .font(.caption)
+                                }
                             }
+                            .buttonStyle(PlainButtonStyle())
                         }
                         .accessibilityIdentifier("CurrencyPicker")
                     }
@@ -53,6 +65,12 @@ struct SettingsView: View {
             }
             .navigationTitle("Settings")
             .accessibilityIdentifier("SettingsForm")
+            .sheet(isPresented: $showingCurrencyPicker) {
+                CurrencyPickerView(
+                    selectedCurrency: $defaultCurrency,
+                    supportedCurrencies: supportedCurrencies
+                )
+            }
             .onAppear {
                 loadCurrencies()
             }

@@ -11,6 +11,7 @@ struct AddAssetView: View {
     @State private var supportedCurrencies: [String] = []
     @State private var isLoading = true
     @State private var fetchError: String? = nil
+    @State private var showingCurrencyPicker = false
     var onSave: (String, Double, String, AssetType, String?) -> Void
 
     init(onSave: @escaping (String, Double, String, AssetType, String?) -> Void)
@@ -30,10 +31,21 @@ struct AddAssetView: View {
                 } else if let error = fetchError {
                     Text("Error: \(error)").foregroundColor(.red)
                 } else {
-                    Picker("Currency", selection: $currency) {
-                        ForEach(supportedCurrencies, id: \.self) { code in
-                            Text(code).tag(code)
+                    HStack {
+                        Text("Currency")
+                        Spacer()
+                        Button(action: {
+                            showingCurrencyPicker = true
+                        }) {
+                            HStack {
+                                Text(currency.isEmpty ? "Select Currency" : currency)
+                                    .foregroundColor(currency.isEmpty ? .secondary : .primary)
+                                Image(systemName: "chevron.right")
+                                    .foregroundColor(.secondary)
+                                    .font(.caption)
+                            }
                         }
+                        .buttonStyle(PlainButtonStyle())
                     }
                 }
                 Picker("Type", selection: $type) {
@@ -68,6 +80,12 @@ struct AddAssetView: View {
                             || Double(amount) == nil || isLoading
                     )
                 }
+            }
+            .sheet(isPresented: $showingCurrencyPicker) {
+                CurrencyPickerView(
+                    selectedCurrency: $currency,
+                    supportedCurrencies: supportedCurrencies
+                )
             }
             .onAppear {
                 if currency.isEmpty {
