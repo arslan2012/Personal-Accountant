@@ -108,7 +108,6 @@ struct AssetsView: View {
         }
         assetList(assets: assets)
       }
-      .navigationTitle("Assets")
       .toolbar {
         ToolbarItem {
           Button(action: { showingAddSheet = true }) {

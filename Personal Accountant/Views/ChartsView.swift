@@ -337,7 +337,6 @@ struct ChartsView: View {
         }
         .padding()
       }
-      .navigationTitle("Charts")
       .background(Color(.systemGroupedBackground))
     }
   }

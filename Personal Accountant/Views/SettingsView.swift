@@ -63,7 +63,6 @@ struct SettingsView: View {
           .accessibilityIdentifier("AppVersion")
         }
       }
-      .navigationTitle("Settings")
       .accessibilityIdentifier("SettingsForm")
       .sheet(isPresented: $showingCurrencyPicker) {
         CurrencyPickerView(

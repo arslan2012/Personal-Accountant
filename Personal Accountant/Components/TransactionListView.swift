@@ -24,35 +24,33 @@ struct TransactionListView: View {
       List {
         ForEach(transactions) { transaction in
           HStack(alignment: .center, spacing: 16) {
-            ZStack {
-              Circle()
-                .fill(
-                  accentColor(
-                    selectedTab == .all
-                      ? (transaction.type
-                        == .income
-                        ? .income : .spending)
-                      : selectedTab
-                  ).opacity(0.18)
-                )
-                .frame(width: 44, height: 44)
-              Image(systemName: icon(transaction.type))
-                .resizable()
-                .scaledToFit()
-                .frame(width: 26, height: 26)
-                .foregroundColor(
-                  accentColor(
-                    selectedTab == .all
-                      ? (transaction.type
-                        == .income
-                        ? .income : .spending)
-                      : selectedTab
+            VStack(alignment: .center, spacing: 4) {
+              ZStack {
+                Circle()
+                  .fill(
+                    accentColor(
+                      selectedTab == .all
+                        ? (transaction.type
+                          == .income
+                          ? .income : .spending)
+                        : selectedTab
+                    ).opacity(0.18)
                   )
-                )
-            }
-            VStack(alignment: .leading, spacing: 4) {
-              Text(transaction.category)
-                .font(.headline)
+                  .frame(width: 44, height: 44)
+                Image(systemName: icon(transaction.type))
+                  .resizable()
+                  .scaledToFit()
+                  .frame(width: 26, height: 26)
+                  .foregroundColor(
+                    accentColor(
+                      selectedTab == .all
+                        ? (transaction.type
+                          == .income
+                          ? .income : .spending)
+                        : selectedTab
+                    )
+                  )
+              }
               Text(
                 transaction.type.rawValue
                   .capitalized
@@ -67,12 +65,18 @@ struct TransactionListView: View {
                     : selectedTab
                 )
               )
+            }
+            VStack(alignment: .leading, spacing: 4) {
+              Text(transaction.category)
+                .font(.headline)
               if !transaction.detail.isEmpty {
-                Text("· ")
-                  + Text(transaction.detail).font(
-                    .caption
-                  )
+                Text(transaction.detail)
+                  .font(.caption)
+                  .foregroundColor(.secondary)
               }
+            }
+            Spacer()
+            VStack(alignment: .trailing, spacing: 2) {
               Text(
                 transaction.date,
                 format: Date.FormatStyle(
@@ -80,11 +84,8 @@ struct TransactionListView: View {
                   time: .omitted
                 )
               )
-              .font(.caption2)
+              .font(.caption)
               .foregroundColor(.secondary)
-            }
-            Spacer()
-            VStack(alignment: .trailing, spacing: 2) {
               Text(
                 "\(transaction.amount, specifier: "%.2f") \(transaction.currency)"
               )
