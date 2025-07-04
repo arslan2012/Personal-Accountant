@@ -289,6 +289,24 @@ struct IncomeOutcomeView: View {
     }
   }
 
+  private func addBulkTransactions(
+    _ transactions: [(String, Double, String, String, Date, TransactionType)]
+  ) {
+    withAnimation {
+      for (category, amount, currency, detail, date, type) in transactions {
+        let newTransaction = Transaction(
+          category: category,
+          amount: amount,
+          currency: currency,
+          detail: detail,
+          date: date,
+          type: type
+        )
+        modelContext.insert(newTransaction)
+      }
+    }
+  }
+
   private func editTransaction(
     transaction: Transaction,
     category: String,
@@ -405,6 +423,8 @@ struct IncomeOutcomeView: View {
         date: date,
         type: type
       )
+    } onBulkSave: { transactions in
+      addBulkTransactions(transactions)
     }
   }
 

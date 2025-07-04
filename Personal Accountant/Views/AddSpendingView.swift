@@ -13,7 +13,10 @@ struct AddSpendingView: View {
   @State private var isLoading = true
   @State private var fetchError: String? = nil
   @State private var showingCurrencyPicker = false
+  @State private var showingImageUpload = false
+
   var onSave: (String, Double, String, String, Date, TransactionType) -> Void
+  var onBulkSave: ([(String, Double, String, String, Date, TransactionType)]) -> Void = { _ in }
 
   private let editingTransaction: Transaction?
 
@@ -22,11 +25,15 @@ struct AddSpendingView: View {
     editingTransaction: Transaction? = nil,
     onSave: @escaping (
       String, Double, String, String, Date, TransactionType
-    ) -> Void
+    ) -> Void,
+    onBulkSave: @escaping ([(String, Double, String, String, Date, TransactionType)]) -> Void = {
+      _ in
+    }
   ) {
     self.editingTransaction = editingTransaction
     self._selectedType = State(initialValue: type)
     self.onSave = onSave
+    self.onBulkSave = onBulkSave
 
     // Set initial values based on whether we're editing or creating new
     if let transaction = editingTransaction {
@@ -42,12 +49,41 @@ struct AddSpendingView: View {
   var body: some View {
     NavigationView {
       Form {
+        // Only show image upload button for new transactions
+        if editingTransaction == nil {
+          Section {
+            Button(action: {
+              showingImageUpload = true
+            }) {
+              HStack {
+                Image(systemName: "camera.viewfinder")
+                  .font(.title3)
+                  .foregroundColor(.blue)
+                Text("Upload Receipt")
+                  .font(.headline)
+                  .foregroundColor(.blue)
+                Spacer()
+                Image(systemName: "chevron.right")
+                  .font(.caption)
+                  .foregroundColor(.secondary)
+              }
+              .padding(.vertical, 8)
+            }
+            .buttonStyle(PlainButtonStyle())
+
+            Text("Take a photo or select an image to automatically extract transaction details")
+              .font(.caption)
+              .foregroundColor(.secondary)
+          }
+        }
+
         Picker("Type", selection: $selectedType) {
           ForEach(TransactionType.allCases, id: \.self) { t in
             Text(t.rawValue.capitalized).tag(t)
           }
         }
         .pickerStyle(.segmented)
+
         TextField("Category", text: $category)
         TextField("Amount", text: $amount)
           .keyboardType(.decimalPad)
@@ -115,6 +151,27 @@ struct AddSpendingView: View {
         CurrencyPickerView(
           selectedCurrency: $currency,
           supportedCurrencies: supportedCurrencies
+        )
+      }
+      .sheet(isPresented: $showingImageUpload) {
+        ImageUploadView(
+          onSingleTransaction: { transactionData in
+            // Populate form fields with extracted data
+            category = transactionData.category
+            amount = String(transactionData.amount)
+            currency = transactionData.currency
+            detail = transactionData.detail
+            date = transactionData.date
+            selectedType = transactionData.type
+          },
+          onMultipleTransactions: { transactionDataList in
+            // Convert to format expected by onBulkSave
+            let transactions = transactionDataList.map { data in
+              (data.category, data.amount, data.currency, data.detail, data.date, data.type)
+            }
+            onBulkSave(transactions)
+            dismiss()
+          }
         )
       }
       .onAppear {
