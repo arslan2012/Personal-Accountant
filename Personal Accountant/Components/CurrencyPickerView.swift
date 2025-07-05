@@ -17,7 +17,7 @@ struct CurrencyPickerView: View {
   }
 
   var body: some View {
-    NavigationView {
+    NavigationStack {
       List {
         ForEach(filteredCurrencies, id: \.self) { currency in
           HStack {

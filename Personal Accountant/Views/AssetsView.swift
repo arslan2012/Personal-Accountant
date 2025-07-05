@@ -62,7 +62,7 @@ struct AssetsView: View {
   }
 
   var body: some View {
-    NavigationView {
+    NavigationStack {
       VStack(alignment: .leading, spacing: 12) {
         Group {
           if isLoadingTotal {

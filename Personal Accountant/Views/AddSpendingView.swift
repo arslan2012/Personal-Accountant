@@ -16,7 +16,7 @@ struct AddSpendingView: View {
   @State private var showingImageUpload = false
 
   var onSave: (String, Double, String, String, Date, TransactionType) -> Void
-  var onBulkSave: ([(String, Double, String, String, Date, TransactionType)]) -> Void = { _ in }
+  var onBulkSave: ([TransactionData]) -> Void = { _ in }
 
   private let editingTransaction: Transaction?
 
@@ -26,9 +26,7 @@ struct AddSpendingView: View {
     onSave: @escaping (
       String, Double, String, String, Date, TransactionType
     ) -> Void,
-    onBulkSave: @escaping ([(String, Double, String, String, Date, TransactionType)]) -> Void = {
-      _ in
-    }
+    onBulkSave: @escaping ([TransactionData]) -> Void = { _ in }
   ) {
     self.editingTransaction = editingTransaction
     self._selectedType = State(initialValue: type)
@@ -47,7 +45,7 @@ struct AddSpendingView: View {
   }
 
   var body: some View {
-    NavigationView {
+    NavigationStack {
       Form {
         // Only show image upload button for new transactions
         if editingTransaction == nil {
@@ -155,22 +153,21 @@ struct AddSpendingView: View {
       }
       .sheet(isPresented: $showingImageUpload) {
         ImageUploadView(
-          onSingleTransaction: { transactionData in
-            // Populate form fields with extracted data
-            category = transactionData.category
-            amount = String(transactionData.amount)
-            currency = transactionData.currency
-            detail = transactionData.detail
-            date = transactionData.date
-            selectedType = transactionData.type
-          },
-          onMultipleTransactions: { transactionDataList in
-            // Convert to format expected by onBulkSave
-            let transactions = transactionDataList.map { data in
-              (data.category, data.amount, data.currency, data.detail, data.date, data.type)
+          onConfirmTransactionsAddition: { transactionDataList in
+            if transactionDataList.count == 1 {
+              // Single transaction - populate form fields with extracted data
+              let transactionData = transactionDataList[0]
+              category = transactionData.category
+              amount = String(transactionData.amount)
+              currency = transactionData.currency
+              detail = transactionData.detail
+              date = transactionData.date
+              selectedType = transactionData.type
+            } else {
+              // Multiple transactions - pass TransactionData directly
+              onBulkSave(transactionDataList)
+              dismiss()
             }
-            onBulkSave(transactions)
-            dismiss()
           }
         )
       }

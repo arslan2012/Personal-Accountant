@@ -289,18 +289,16 @@ struct IncomeOutcomeView: View {
     }
   }
 
-  private func addBulkTransactions(
-    _ transactions: [(String, Double, String, String, Date, TransactionType)]
-  ) {
+  private func addBulkTransactions(_ transactions: [TransactionData]) {
     withAnimation {
-      for (category, amount, currency, detail, date, type) in transactions {
+      for transactionData in transactions {
         let newTransaction = Transaction(
-          category: category,
-          amount: amount,
-          currency: currency,
-          detail: detail,
-          date: date,
-          type: type
+          category: transactionData.category,
+          amount: transactionData.amount,
+          currency: transactionData.currency,
+          detail: transactionData.detail,
+          date: transactionData.date,
+          type: transactionData.type
         )
         modelContext.insert(newTransaction)
       }
@@ -328,7 +326,7 @@ struct IncomeOutcomeView: View {
 
   // MARK: - Main View
   var body: some View {
-    NavigationView {
+    NavigationStack {
       VStack(alignment: .leading, spacing: 12) {
         tabSelector
         monthSwipeView

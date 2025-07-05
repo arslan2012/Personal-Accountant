@@ -21,7 +21,7 @@ struct TransactionReviewView: View {
   }
 
   var body: some View {
-    NavigationView {
+    NavigationStack {
       VStack {
         headerView
         contentView

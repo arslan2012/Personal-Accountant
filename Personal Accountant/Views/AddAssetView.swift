@@ -32,7 +32,7 @@ struct AddAssetView: View {
   }
 
   var body: some View {
-    NavigationView {
+    NavigationStack {
       Form {
         TextField("Name", text: $name)
         TextField("Amount", text: $amount)

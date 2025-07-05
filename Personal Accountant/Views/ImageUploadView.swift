@@ -18,11 +18,10 @@ struct ImageUploadView: View {
   @State private var showingReview = false
 
   // Callbacks
-  let onSingleTransaction: (TransactionData) -> Void
-  let onMultipleTransactions: ([TransactionData]) -> Void
+  let onConfirmTransactionsAddition: ([TransactionData]) -> Void
 
   var body: some View {
-    NavigationView {
+    NavigationStack {
       VStack(spacing: 20) {
         // Header
         VStack(spacing: 8) {
@@ -155,12 +154,8 @@ struct ImageUploadView: View {
         TransactionReviewView(
           transactions: extractedTransactions,
           onSave: { transactions in
-            // Handle saving based on count
-            if transactions.count == 1 {
-              onSingleTransaction(transactions[0])
-            } else {
-              onMultipleTransactions(transactions)
-            }
+            // Handle saving - always pass the array of transactions
+            onConfirmTransactionsAddition(transactions)
             // Dismiss the ImageUploadView after saving
             dismiss()
           },
@@ -214,8 +209,12 @@ struct ImageUploadView: View {
 
         if transactions.isEmpty {
           uploadError = "No transactions found in the image"
+        } else if transactions.count == 1 {
+          // Single transaction - call callback directly and dismiss
+          onConfirmTransactionsAddition(transactions)
+          dismiss()
         } else {
-          // Store transactions and show review view
+          // Multiple transactions - show review view
           extractedTransactions = transactions
           showingReview = true
         }

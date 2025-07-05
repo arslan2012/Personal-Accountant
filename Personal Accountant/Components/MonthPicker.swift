@@ -47,7 +47,7 @@ struct MonthPicker: View {
     }
     .frame(maxWidth: 200)
     .sheet(isPresented: $showingPicker) {
-      NavigationView {
+      NavigationStack {
         HStack {
           Picker("Month", selection: $tempMonthIndex) {
             ForEach(0..<months.count, id: \.self) { index in
