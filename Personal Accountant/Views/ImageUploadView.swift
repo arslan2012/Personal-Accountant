@@ -13,6 +13,10 @@ struct ImageUploadView: View {
   @State private var showingCamera = false
   @State private var uploadError: String? = nil
 
+  // Transaction review states
+  @State private var extractedTransactions: [TransactionData] = []
+  @State private var showingReview = false
+
   // Callbacks
   let onSingleTransaction: (TransactionData) -> Void
   let onMultipleTransactions: ([TransactionData]) -> Void
@@ -147,6 +151,25 @@ struct ImageUploadView: View {
           }
         }
       }
+      .sheet(isPresented: $showingReview) {
+        TransactionReviewView(
+          transactions: extractedTransactions,
+          onSave: { transactions in
+            // Handle saving based on count
+            if transactions.count == 1 {
+              onSingleTransaction(transactions[0])
+            } else {
+              onMultipleTransactions(transactions)
+            }
+            // Dismiss the ImageUploadView after saving
+            dismiss()
+          },
+          onCancel: {
+            // Just close the review view, stay on ImageUploadView
+            showingReview = false
+          }
+        )
+      }
       .photosPicker(isPresented: $showingImagePicker, selection: $selectedImage, matching: .images)
       .onChange(of: selectedImage) { _, newItem in
         Task {
@@ -191,14 +214,10 @@ struct ImageUploadView: View {
 
         if transactions.isEmpty {
           uploadError = "No transactions found in the image"
-        } else if transactions.count == 1 {
-          // Single transaction - return to caller
-          onSingleTransaction(transactions[0])
-          dismiss()
         } else {
-          // Multiple transactions - return to caller
-          onMultipleTransactions(transactions)
-          dismiss()
+          // Store transactions and show review view
+          extractedTransactions = transactions
+          showingReview = true
         }
       }
     } catch {
